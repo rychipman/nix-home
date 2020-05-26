@@ -18,4 +18,43 @@
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "20.09";
+
+  programs.git = {
+    enable = true;
+    userName = "Ryan Chipman";
+    userEmail = "ryan@ryanchipman.com";
+    aliases = {
+      aa = "add --all --intent-to-add";
+      addp = "add --patch";
+      st = "status";
+      ci = "commit";
+      co = "checkout";
+      cp = "cherry-pick";
+      diffc = "diff --cached";
+      amend = "commit --amend";
+      fixup = "commit --fixup";
+      ri = "rebase --interactive --autosquash";
+      rba = "rebase --abort";
+      rbc = "rebase --continue";
+      dangling = "! git lg $(git fsck --no-reflog | awk '/dangling commit/ {print $3}')";
+      lc = "log ORIG_HEAD.. --stat --no-merges";
+      lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+    };
+    ignores = [
+      ".envrc"
+      "*~"
+      "*#"
+      "*.pyc"
+      "*.bak"
+      "*.swp"
+      "*.ignore"
+      "venv"
+    ];
+    extraConfig = {
+      color.ui = true;
+      merge.ff = "only";
+      rerere.enabled = true;
+      github.user = "rychipman";
+    };
+  };
 }
