@@ -57,4 +57,56 @@
       github.user = "rychipman";
     };
   };
+
+  programs.bash = {
+    enable = true;
+    historyFile = "$HOME/.local/share/bash/history";
+    historyControl = ["ignorespace" "ignoredups"];
+    shellAliases = {
+      ll = "ls -l";
+      la = "ls -la";
+      mkdir = "mkdir -pv";
+      c = "clear";
+      h = "history";
+      j = "jobs -l";
+      ping = "ping -c 4";
+      rm = "rm -I --preserve-root";
+      mv = "mv -i";
+      cp = "cp -i";
+      ln = "ln -i";
+      chown = "chown --preserve-root";
+      chmod = "chmod --preserve-root";
+      chgrp = "chgrp --preserve-root";
+      sudo = "sudo ";
+      tt = "tmux attach-session -t";
+      perm = "stat -c '%A %a %n'";
+    };
+    sessionVariables = {
+      CLICOLOR = 1;
+      LSCOLORS = "Gxfxcxdxbxegedabagacad";
+      LESS = "--ignore-case --raw-control-chars";
+      PAGER = "less";
+      EDITOR = "vim";
+      TERM = "screen-256color";
+      TMPDIR = "/tmp";
+    };
+    profileExtra = ''
+      . /home/ryanix/.nix-profile/etc/profile.d/nix.sh
+    '';
+  };
+
+  programs.vim = {
+    enable = true;
+    plugins = [
+      pkgs.vimPlugins.vim-nix
+      pkgs.vimPlugins.wombat256-vim
+    ];
+    extraConfig = ''
+      colorscheme wombat256mod
+      highlight Normal ctermbg=233
+      highlight SpecialKey ctermbg=233 ctermfg=235
+      highlight Whitespace ctermbg=233 ctermfg=235
+      highlight ExtraWhitespace ctermbg=red
+    '';
+  };
 }
