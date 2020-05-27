@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 
+let
+  mod = "Mod4";
+in
 {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -109,4 +112,128 @@
       highlight ExtraWhitespace ctermbg=red
     '';
   };
+
+  programs.emacs = {
+    enable = true;
+  };
+
+  programs.alacritty = {
+    enable = true;
+    settings = {
+
+    };
+  };
+
+  programs.mbsync = {
+    enable = true;
+  };
+
+  xsession.enable = true;
+  xsession.windowManager.i3 = {
+    enable = true;
+    config = {
+      modifier = "Mod4";
+      fonts = ["pango: Source Code Pro 11px"];
+      keybindings = {
+        "${mod}+k" = "workspace web";
+        "${mod}+j" = "workspace edit";
+        "${mod}+l" = "workspace term";
+        "${mod}+h" = "workspace msg";
+        "${mod}+semicolon" = "workspace msg";
+        "${mod}+z" = "workspace vid";
+
+        "${mod}+Control+k" = "move to workspace web";
+        "${mod}+Control+j" = "move to workspace edit";
+        "${mod}+Control+l" = "move to workspace term";
+        "${mod}+Control+h" = "move to workspace msg";
+        "${mod}+Control+z" = "move to workspace vid";
+
+        "${mod}+Shift+h" = ''workspace msg; exec "google-chrome-stable --app=https://mongodb.slack.com"'';
+        "${mod}+Shift+j" = "workspace edit; exec emacs";
+        "${mod}+Shift+l" = "workspace term; exec lxterminal";
+        "${mod}+Shift+k" = "workspace web; exec firefox";
+        "${mod}+Shift+z" = "workspace vid; exec zoom";
+
+        "${mod}+u" = ''[urgent="latest"] focus'';
+        "${mod}+Return" = "exec lxterminal";
+        "${mod}+o" = "exec dmenu_run";
+        "${mod}+r" = "reload";
+        "${mod}+Shift+r" = "restart";
+        "${mod}+BackSpace" = "kill";
+        "${mod}+q" = ''exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -B 'Yes, exit i3 and end X session' 'i3-msg exit'"'';
+
+        "${mod}+Left" = "focus left";
+        "${mod}+Right" = "focus right";
+        "${mod}+Up" = "focus up";
+        "${mod}+Down" = "focus down";
+
+        "${mod}+v" = "split v";
+        "${mod}+f" = "fullscreen toggle";
+        "${mod}+m" = "floating toggle";
+        "${mod}+space" = "focus mode_toggle";
+        "${mod}+period" = "focus child";
+        "${mod}+comma" = "focus parent";
+
+        "${mod}+1" = "layout stacking";
+        "${mod}+2" = "layout tabbed";
+        "${mod}+3" = "layout toggle split";
+
+        "${mod}+i" = "bar hidden_state toggle";
+      };
+    };
+    extraConfig = ''
+      default_border pixel
+      
+      workspace "web" output eDP-1
+      workspace "msg" output eDP-1
+      workspace "vid" output eDP-1
+      workspace "edit" output DP-1-1 eDP-1
+      workspace "term" output DP-1-3 eDP-1
+
+      bar {
+        position top
+        status_command i3status
+        workspace_buttons no
+        mode hide
+        modifier none
+        hidden_state hide
+      }
+
+      bar {
+        position bottom
+        status_command i3status
+        mode hide
+        modifier none
+        hidden_state hide
+      }
+    '';
+  };
+
+  home.file.".xinitrc".text = ''
+    # map caps lock to control
+    xmodmap -e 'keycode 66 = Control_L'
+    xmodmap -e 'clear Lock'
+    xmodmap -e 'add Control = Control_L'
+    xcape -e 'Control_L=Escape'
+
+    # remove everything from mod4
+    xmodmap -e 'clear mod4'
+
+    # map return to return/control
+    spare_modifier='Hyper_L'
+    xmodmap -e "remove mod4 = $spare_modifier"
+    xmodmap -e "keycode 36 = $spare_modifier"
+    xmodmap -e "add Control = $spare_modifier"
+    xmodmap -e 'keycode any = Return'
+    xcape -e "$spare_modifier=Return"
+
+    # map tab to tab/super
+    spare_modifier_2='Hyper_R'
+    xmodmap -e "keycode 23 = $spare_modifier_2"
+    xmodmap -e "add mod4 = $spare_modifier_2"
+    xmodmap -e 'keycode any = Tab'
+    xcape -e "$spare_modifier=Tab"
+
+    exec i3
+  '';
 }
