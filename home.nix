@@ -22,6 +22,12 @@ in
   # changes in each release.
   home.stateVersion = "20.09";
 
+  home.packages = with pkgs; [
+    lxterminal
+    beancount
+    fava
+  ];
+
   programs.git = {
     enable = true;
     userName = "Ryan Chipman";
@@ -67,6 +73,7 @@ in
     historyControl = ["ignorespace" "ignoredups"];
     shellAliases = {
       ll = "ls -l";
+      lla = "ls -la";
       la = "ls -la";
       mkdir = "mkdir -pv";
       c = "clear";
@@ -113,6 +120,10 @@ in
     '';
   };
 
+  programs.firefox = {
+    enable = true;
+  };
+
   programs.emacs = {
     enable = true;
   };
@@ -122,6 +133,10 @@ in
     settings = {
 
     };
+  };
+
+  programs.tmux = {
+    enable = true;
   };
 
   programs.mbsync = {
