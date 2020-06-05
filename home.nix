@@ -223,32 +223,45 @@ in
       }
     '';
   };
+    
+  home.file = { 
+    ".xinitrc".text = ''  
+      # map caps lock to control
+      xmodmap -e 'keycode 66 = Control_L'
+      xmodmap -e 'clear Lock'
+      xmodmap -e 'add Control = Control_L'
+      xcape -e 'Control_L=Escape'
 
-  home.file.".xinitrc".text = ''
-    # map caps lock to control
-    xmodmap -e 'keycode 66 = Control_L'
-    xmodmap -e 'clear Lock'
-    xmodmap -e 'add Control = Control_L'
-    xcape -e 'Control_L=Escape'
+      # remove everything from mod4
+      xmodmap -e 'clear mod4'
 
-    # remove everything from mod4
-    xmodmap -e 'clear mod4'
+      # map return to return/control
+      spare_modifier='Hyper_L'
+      xmodmap -e "remove mod4 = $spare_modifier"
+      xmodmap -e "keycode 36 = $spare_modifier"
+      xmodmap -e "add Control = $spare_modifier"
+      xmodmap -e 'keycode any = Return'
+      xcape -e "$spare_modifier=Return"
 
-    # map return to return/control
-    spare_modifier='Hyper_L'
-    xmodmap -e "remove mod4 = $spare_modifier"
-    xmodmap -e "keycode 36 = $spare_modifier"
-    xmodmap -e "add Control = $spare_modifier"
-    xmodmap -e 'keycode any = Return'
-    xcape -e "$spare_modifier=Return"
+      # map tab to tab/super
+      spare_modifier_2='Hyper_R'
+      xmodmap -e "keycode 23 = $spare_modifier_2"
+      xmodmap -e "add mod4 = $spare_modifier_2"
+      xmodmap -e 'keycode any = Tab'
+      xcape -e "$spare_modifier=Tab"
 
-    # map tab to tab/super
-    spare_modifier_2='Hyper_R'
-    xmodmap -e "keycode 23 = $spare_modifier_2"
-    xmodmap -e "add mod4 = $spare_modifier_2"
-    xmodmap -e 'keycode any = Tab'
-    xcape -e "$spare_modifier=Tab"
+      exec i3
+    '';
 
-    exec i3
-  '';
+    ".config/lxterminal/lxterminal.conf".text = ''
+      [general]
+      fontname=Source Code Pro 11
+      hidemenubar=true
+      hidescrollbar=true
+    '';
+
+    ".emacs.d".source = "/home/ryanix/.dotfiles/emacs/.emacs.d";
+  };
+
+    
 }
