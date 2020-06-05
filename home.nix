@@ -260,7 +260,7 @@ in
       hidescrollbar=true
     '';
 
-    ".emacs.d".source = "/home/ryanix/.dotfiles/emacs/.emacs.d";
+    #".emacs.d".source = "/home/ryanix/.dotfiles/emacs/.emacs.d";
   };
 
     
