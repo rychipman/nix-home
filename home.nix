@@ -268,7 +268,9 @@ in
       hidescrollbar=true
     '';
 
-    #".emacs.d".source = "/home/ryanix/.dotfiles/emacs/.emacs.d";
+    ".emacs.d".source = dots/emacs/emacs.d;
+    ".local/share/applications/emacsclient.desktop".source = dots/emacs/emacsclient.desktop;
+    ".config/mimeapps.list".source = dots/emacs/mimeapps.list;
   };
 
     
