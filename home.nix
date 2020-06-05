@@ -101,7 +101,15 @@ in
       TMPDIR = "/tmp";
     };
     profileExtra = ''
-      . /home/ryanix/.nix-profile/etc/profile.d/nix.sh
+      nix_profile_sh="$HOME/.nix-profile/etc/profile.d/nix.sh"
+      if [ -e "$nix_profile_sh" ]; then
+        . "$nix_profile_sh"
+      fi
+
+      hm_sh="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      if [ -e "$hm_sh" ]; then
+        . "$hm_sh"
+      fi
     '';
   };
 
